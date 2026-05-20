@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tickets>
+  <ticket>
+    <customer_id>CUST001</customer_id>
+    <customer_email>john@example.com</customer_email>
+    <customer_name>John Doe</customer_name>
+    <subject>Cannot login to account</subject>
+    <description>I have been trying to login for the past hour but keep getting an error message</description>
+    <category>account_access</category>
+    <priority>high</priority>
+    <status>new</status>
+    <tags><tag>login</tag><tag>error</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST002</customer_id>
+    <customer_email>jane@example.com</customer_email>
+    <customer_name>Jane Smith</customer_name>
+    <subject>Billing inquiry about subscription</subject>
+    <description>I was charged twice for my monthly subscription and need a refund for the duplicate charge</description>
+    <category>billing_question</category>
+    <priority>medium</priority>
+    <status>new</status>
+    <tags><tag>billing</tag><tag>refund</tag></tags>
+    <metadata><source>email</source><device_type>mobile</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST003</customer_id>
+    <customer_email>bob@example.com</customer_email>
+    <customer_name>Bob Wilson</customer_name>
+    <subject>App crashes on startup since update</subject>
+    <description>The mobile application crashes immediately after opening ever since the last update was installed</description>
+    <category>technical_issue</category>
+    <priority>urgent</priority>
+    <status>in_progress</status>
+    <tags><tag>crash</tag><tag>mobile</tag></tags>
+    <metadata><source>chat</source><device_type>mobile</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST004</customer_id>
+    <customer_email>alice@example.com</customer_email>
+    <customer_name>Alice Green</customer_name>
+    <subject>Dark mode feature request</subject>
+    <description>I would love to see a dark mode option added to the application for comfortable use during night time</description>
+    <category>feature_request</category>
+    <priority>low</priority>
+    <status>new</status>
+    <tags><tag>feature</tag><tag>ui</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST005</customer_id>
+    <customer_email>charlie@example.com</customer_email>
+    <customer_name>Charlie Brown</customer_name>
+    <subject>Two-factor authentication code not received</subject>
+    <description>The SMS verification code for two-factor authentication is not being sent to my registered phone number</description>
+    <category>account_access</category>
+    <priority>urgent</priority>
+    <status>new</status>
+    <tags><tag>2fa</tag><tag>security</tag></tags>
+    <metadata><source>phone</source><device_type>mobile</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST006</customer_id>
+    <customer_email>diana@example.com</customer_email>
+    <customer_name>Diana Prince</customer_name>
+    <subject>Search filter resets on page refresh</subject>
+    <description>The applied search filters reset back to their default values every time the page is refreshed unexpectedly</description>
+    <category>bug_report</category>
+    <priority>medium</priority>
+    <status>new</status>
+    <tags><tag>search</tag><tag>filter</tag><tag>bug</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST007</customer_id>
+    <customer_email>evan@example.com</customer_email>
+    <customer_name>Evan Davis</customer_name>
+    <subject>Subscription upgrade not showing new features</subject>
+    <description>I upgraded my plan two days ago but the new features promised in the higher tier are still not available</description>
+    <category>billing_question</category>
+    <priority>high</priority>
+    <status>waiting_customer</status>
+    <tags><tag>subscription</tag><tag>upgrade</tag></tags>
+    <metadata><source>email</source><device_type>tablet</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST008</customer_id>
+    <customer_email>fiona@example.com</customer_email>
+    <customer_name>Fiona Apple</customer_name>
+    <subject>Mobile app becomes slow after 10 minutes</subject>
+    <description>The application becomes extremely slow and unresponsive after being used for about ten minutes requiring restart</description>
+    <category>technical_issue</category>
+    <priority>medium</priority>
+    <status>new</status>
+    <tags><tag>performance</tag><tag>mobile</tag></tags>
+    <metadata><source>chat</source><device_type>mobile</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST009</customer_id>
+    <customer_email>george@example.com</customer_email>
+    <customer_name>George Miller</customer_name>
+    <subject>Request API rate limit increase</subject>
+    <description>Our production integration requires higher API rate limits than the current plan allows for reliable operation</description>
+    <category>feature_request</category>
+    <priority>medium</priority>
+    <status>new</status>
+    <tags><tag>api</tag><tag>rate-limit</tag></tags>
+    <metadata><source>api</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST010</customer_id>
+    <customer_email>hannah@example.com</customer_email>
+    <customer_name>Hannah White</customer_name>
+    <subject>Account suspended without prior notice</subject>
+    <description>My account was suspended without any warning and I cannot access my data despite having an active paid subscription</description>
+    <category>account_access</category>
+    <priority>urgent</priority>
+    <status>in_progress</status>
+    <tags><tag>suspended</tag><tag>account</tag></tags>
+    <metadata><source>phone</source><device_type>mobile</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST011</customer_id>
+    <customer_email>ivan@example.com</customer_email>
+    <customer_name>Ivan Petrov</customer_name>
+    <subject>Webhook events not being delivered</subject>
+    <description>Our registered webhook endpoints stopped receiving any events after the scheduled platform migration last week</description>
+    <category>technical_issue</category>
+    <priority>urgent</priority>
+    <status>new</status>
+    <tags><tag>webhook</tag><tag>api</tag></tags>
+    <metadata><source>api</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST012</customer_id>
+    <customer_email>julia@example.com</customer_email>
+    <customer_name>Julia Roberts</customer_name>
+    <subject>Wrong tax calculation on latest invoice</subject>
+    <description>The tax amount on my latest invoice appears to be calculated incorrectly based on my registered location and plan</description>
+    <category>billing_question</category>
+    <priority>high</priority>
+    <status>new</status>
+    <tags><tag>tax</tag><tag>invoice</tag></tags>
+    <metadata><source>email</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST013</customer_id>
+    <customer_email>kevin@example.com</customer_email>
+    <customer_name>Kevin Hart</customer_name>
+    <subject>Calendar integration stopped syncing</subject>
+    <description>The Google Calendar integration stopped syncing events with the platform after the most recent update</description>
+    <category>technical_issue</category>
+    <priority>medium</priority>
+    <status>waiting_customer</status>
+    <tags><tag>calendar</tag><tag>sync</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST014</customer_id>
+    <customer_email>laura@example.com</customer_email>
+    <customer_name>Laura Palmer</customer_name>
+    <subject>Bulk user import via CSV feature request</subject>
+    <description>We need the ability to bulk import users via a CSV file to significantly speed up onboarding for large teams</description>
+    <category>feature_request</category>
+    <priority>medium</priority>
+    <status>new</status>
+    <tags><tag>bulk</tag><tag>import</tag><tag>users</tag></tags>
+    <metadata><source>api</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST015</customer_id>
+    <customer_email>mike@example.com</customer_email>
+    <customer_name>Mike Johnson</customer_name>
+    <subject>Payment method update form error</subject>
+    <description>I cannot update my credit card details because the payment form returns a generic error every time I submit</description>
+    <category>billing_question</category>
+    <priority>high</priority>
+    <status>new</status>
+    <tags><tag>payment</tag><tag>card</tag></tags>
+    <metadata><source>web_form</source><device_type>mobile</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST016</customer_id>
+    <customer_email>nina@example.com</customer_email>
+    <customer_name>Nina Simone</customer_name>
+    <subject>Session expires too quickly during work</subject>
+    <description>The user session expires after only five minutes of inactivity which is very disruptive to a normal work workflow</description>
+    <category>technical_issue</category>
+    <priority>low</priority>
+    <status>new</status>
+    <tags><tag>session</tag><tag>timeout</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST017</customer_id>
+    <customer_email>oscar@example.com</customer_email>
+    <customer_name>Oscar Wilde</customer_name>
+    <subject>Date picker shows incorrect dates</subject>
+    <description>The date picker displays incorrect dates when the browser timezone is different from the server configured timezone</description>
+    <category>bug_report</category>
+    <priority>medium</priority>
+    <status>new</status>
+    <tags><tag>datepicker</tag><tag>timezone</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST018</customer_id>
+    <customer_email>petra@example.com</customer_email>
+    <customer_name>Petra Novak</customer_name>
+    <subject>Cannot access admin panel after update</subject>
+    <description>After the latest platform update I can no longer access the admin panel even though my admin credentials are unchanged</description>
+    <category>account_access</category>
+    <priority>urgent</priority>
+    <status>in_progress</status>
+    <tags><tag>admin</tag><tag>access</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST019</customer_id>
+    <customer_email>quinn@example.com</customer_email>
+    <customer_name>Quinn Taylor</customer_name>
+    <subject>Custom reports builder feature request</subject>
+    <description>We would like the ability to build and save custom reports using user-defined metrics filters and date ranges</description>
+    <category>feature_request</category>
+    <priority>low</priority>
+    <status>new</status>
+    <tags><tag>reports</tag><tag>custom</tag></tags>
+    <metadata><source>email</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST020</customer_id>
+    <customer_email>rachel@example.com</customer_email>
+    <customer_name>Rachel Green</customer_name>
+    <subject>Project settings not persisted after logout</subject>
+    <description>Changes made to project settings are not saved when the session ends and must be re-entered every time</description>
+    <category>bug_report</category>
+    <priority>high</priority>
+    <status>new</status>
+    <tags><tag>data</tag><tag>persistence</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST021</customer_id>
+    <customer_email>sam@example.com</customer_email>
+    <customer_name>Sam Wilson</customer_name>
+    <subject>Slack integration not posting notifications</subject>
+    <description>The Slack integration stopped posting notifications to our channel after we changed our workspace URL recently</description>
+    <category>technical_issue</category>
+    <priority>medium</priority>
+    <status>in_progress</status>
+    <tags><tag>slack</tag><tag>integration</tag></tags>
+    <metadata><source>chat</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST022</customer_id>
+    <customer_email>tina@example.com</customer_email>
+    <customer_name>Tina Turner</customer_name>
+    <subject>UI text truncated on mobile screens</subject>
+    <description>Several labels and button texts are cut off on small mobile screens making certain parts of the app unusable</description>
+    <category>bug_report</category>
+    <priority>medium</priority>
+    <status>new</status>
+    <tags><tag>ui</tag><tag>mobile</tag><tag>text</tag></tags>
+    <metadata><source>web_form</source><device_type>mobile</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST023</customer_id>
+    <customer_email>umar@example.com</customer_email>
+    <customer_name>Umar Khan</customer_name>
+    <subject>Refund not processed after 10 business days</subject>
+    <description>I requested a refund ten days ago and was promised a five business day turnaround but it has not arrived</description>
+    <category>billing_question</category>
+    <priority>urgent</priority>
+    <status>in_progress</status>
+    <tags><tag>refund</tag><tag>delay</tag></tags>
+    <metadata><source>email</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST024</customer_id>
+    <customer_email>vera@example.com</customer_email>
+    <customer_name>Vera Lynn</customer_name>
+    <subject>SSO configuration failing with identity provider</subject>
+    <description>We configured SSO with our identity provider but all users are getting authentication errors when attempting to login</description>
+    <category>account_access</category>
+    <priority>high</priority>
+    <status>waiting_customer</status>
+    <tags><tag>sso</tag><tag>authentication</tag></tags>
+    <metadata><source>api</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST025</customer_id>
+    <customer_email>will@example.com</customer_email>
+    <customer_name>Will Smith</customer_name>
+    <subject>SAML authentication support request</subject>
+    <description>Our enterprise security policy requires SAML-based authentication support which is not currently available in the platform</description>
+    <category>feature_request</category>
+    <priority>high</priority>
+    <status>new</status>
+    <tags><tag>saml</tag><tag>enterprise</tag><tag>security</tag></tags>
+    <metadata><source>email</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST026</customer_id>
+    <customer_email>xena@example.com</customer_email>
+    <customer_name>Xena Warrior</customer_name>
+    <subject>Audit log missing user action entries</subject>
+    <description>Multiple user actions performed by our team last week are completely absent from the audit log records</description>
+    <category>bug_report</category>
+    <priority>high</priority>
+    <status>new</status>
+    <tags><tag>audit</tag><tag>log</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST027</customer_id>
+    <customer_email>yara@example.com</customer_email>
+    <customer_name>Yara Sofia</customer_name>
+    <subject>Recurring payment failed without any alert</subject>
+    <description>A recurring subscription payment failed last month without any notification email being sent to the account holder</description>
+    <category>billing_question</category>
+    <priority>urgent</priority>
+    <status>new</status>
+    <tags><tag>recurring</tag><tag>payment</tag><tag>notification</tag></tags>
+    <metadata><source>email</source><device_type>mobile</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST028</customer_id>
+    <customer_email>zach@example.com</customer_email>
+    <customer_name>Zach Morris</customer_name>
+    <subject>User role permissions not being enforced</subject>
+    <description>Users assigned the editor role can still access and modify admin-only sections despite the configured permission restrictions</description>
+    <category>bug_report</category>
+    <priority>urgent</priority>
+    <status>in_progress</status>
+    <tags><tag>roles</tag><tag>permissions</tag></tags>
+    <metadata><source>web_form</source><device_type>desktop</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST029</customer_id>
+    <customer_email>amy@example.com</customer_email>
+    <customer_name>Amy Adams</customer_name>
+    <subject>Multi-language support feature request</subject>
+    <description>We need the platform to support Spanish and French language translations for our growing international customer base</description>
+    <category>feature_request</category>
+    <priority>medium</priority>
+    <status>new</status>
+    <tags><tag>i18n</tag><tag>translation</tag></tags>
+    <metadata><source>email</source><device_type>tablet</device_type></metadata>
+  </ticket>
+  <ticket>
+    <customer_id>CUST030</customer_id>
+    <customer_email>brian@example.com</customer_email>
+    <customer_name>Brian May</customer_name>
+    <subject>Downgrade plan still billed at higher rate</subject>
+    <description>I downgraded my subscription plan two weeks ago but continue to be charged at the original higher tier monthly rate</description>
+    <category>billing_question</category>
+    <priority>high</priority>
+    <status>new</status>
+    <tags><tag>downgrade</tag><tag>billing</tag></tags>
+    <metadata><source>email</source><device_type>desktop</device_type></metadata>
+  </ticket>
+</tickets>
