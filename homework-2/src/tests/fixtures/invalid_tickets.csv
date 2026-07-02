@@ -1,0 +1,4 @@
+customer_id,customer_email,customer_name,subject,description,category,priority
+CUST001,invalid-email,John Doe,Test,Short,account_access,high
+,john@example.com,Jane Smith,Subject,This is a valid description for testing purposes,billing_question,medium
+CUST003,bob@example.com,Bob Wilson,,This description is valid but the subject is empty,technical_issue,urgent

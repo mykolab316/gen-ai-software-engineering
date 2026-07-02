@@ -1,0 +1,47 @@
+[
+  {
+    "customer_id": "CUST001",
+    "customer_email": "john@example.com",
+    "customer_name": "John Doe",
+    "subject": "Cannot login to account",
+    "description": "I have been trying to login for the past hour but keep getting an error message",
+    "category": "account_access",
+    "priority": "high"
+  },
+  {
+    "customer_id": "CUST002",
+    "customer_email": "jane@example.com",
+    "customer_name": "Jane Smith",
+    "subject": "Payment not processed",
+    "description": "My payment was declined even though my card is valid and has sufficient funds",
+    "category": "billing_question",
+    "priority": "medium"
+  },
+  {
+    "customer_id": "CUST003",
+    "customer_email": "bob@example.com",
+    "customer_name": "Bob Wilson",
+    "subject": "App crashes on startup",
+    "description": "The mobile app crashes immediately after opening since the last update",
+    "category": "technical_issue",
+    "priority": "urgent"
+  },
+  {
+    "customer_id": "CUST004",
+    "customer_email": "alice@example.com",
+    "customer_name": "Alice Green",
+    "subject": "Password reset not working",
+    "description": "I requested a password reset email but never received it despite multiple attempts",
+    "category": "account_access",
+    "priority": "high"
+  },
+  {
+    "customer_id": "CUST005",
+    "customer_email": "charlie@example.com",
+    "customer_name": "Charlie Brown",
+    "subject": "Incorrect charge on invoice",
+    "description": "I was billed twice for the same subscription period and need a refund for the duplicate charge",
+    "category": "billing_question",
+    "priority": "high"
+  }
+]
