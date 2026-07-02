@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/admin/gen-ai-homeworks/gen-ai-software-engineering/homework-5/src"]
+    },
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "NOTION_TOKEN": "${NOTION_TOKEN}"
+      }
+    },
+    "custom-mcp": {
+      "command": "/Users/admin/gen-ai-homeworks/gen-ai-software-engineering/homework-5/src/custom-mcp-server/.venv/bin/python",
+      "args": ["/Users/admin/gen-ai-homeworks/gen-ai-software-engineering/homework-5/src/custom-mcp-server/server.py"]
+    }
+  }
+}
