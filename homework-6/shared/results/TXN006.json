@@ -1,0 +1,24 @@
+{
+  "message_id": "d1040de7-0da1-4071-b934-192de27b2d50",
+  "timestamp": "2026-07-07T21:05:46Z",
+  "source_stage": "settlement",
+  "target_stage": "results",
+  "message_type": "transaction",
+  "data": {
+    "transaction_id": "TXN006",
+    "timestamp": "2026-03-16T10:05:00Z",
+    "source_account": "ACC-1006",
+    "destination_account": "ACC-7700",
+    "amount": "200.00",
+    "currency": "XYZ",
+    "transaction_type": "transfer",
+    "description": "Test payment",
+    "metadata": {
+      "channel": "online",
+      "country": "US"
+    },
+    "status": "rejected",
+    "reason": "currency 'XYZ' is not a valid ISO 4217 code",
+    "settled": false
+  }
+}
