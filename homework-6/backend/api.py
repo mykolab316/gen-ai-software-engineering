@@ -45,11 +45,16 @@ app.add_middleware(
 
 
 def _load_results() -> list[dict]:
-    """Return the ``data`` payload of every result file (excluding _summary)."""
-    if not RESULTS.exists():
+    """Return the ``data`` payload of every result file (excluding _summary).
+
+    Reads from ``orchestrator.RESULTS`` at call time (single source of truth),
+    so tests that redirect the orchestrator's shared dirs are honored here too.
+    """
+    results_dir = orchestrator.RESULTS
+    if not results_dir.exists():
         return []
     items = []
-    for f in sorted(RESULTS.glob("*.json")):
+    for f in sorted(results_dir.glob("*.json")):
         if f.name.startswith("_"):
             continue
         items.append(json.loads(f.read_text())["data"])
@@ -57,8 +62,9 @@ def _load_results() -> list[dict]:
 
 
 def _load_summary() -> dict | None:
-    if SUMMARY_FILE.exists():
-        return json.loads(SUMMARY_FILE.read_text())
+    summary_file = orchestrator.SUMMARY_FILE
+    if summary_file.exists():
+        return json.loads(summary_file.read_text())
     return None
 
 
