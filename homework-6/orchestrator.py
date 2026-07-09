@@ -1,19 +1,23 @@
-"""Orchestrator — runs the transaction pipeline end to end.
+"""Orchestrator — drives the agent microservices over HTTP.
 
-Flow (file-based hand-off through ``shared/``):
+The agent execution order and service endpoints are **configuration, not code**:
+they are read from ``pipeline-config.json``. For each transaction the
+orchestrator POSTs the record to each agent service in the configured order and
+persists the returned record as a JSON envelope in ``shared/``.
 
-    sample-transactions.json
-        -> shared/input/         (orchestrator drops raw records)
-        -> [validator]  input   -> processing -> output   (recycled to input)
-        -> [fraud]      input    -> processing -> output   (recycled to input)
-        -> [settlement] input    -> processing -> results  (final)
+    pipeline-config.json
+            │ order + urls
+            ▼
+    orchestrator ──POST──▶ :8001 validator
+                 ──POST──▶ :8002 fraud_detector
+                 ──POST──▶ :8003 settlement ──▶ shared/results/
 
-``input/`` is the live queue each stage drains; ``processing/`` holds a record
-while a stage works on it; ``output/`` stages results for the next stage;
-``results/`` holds final outcomes. Every hop writes a valid JSON envelope.
+Shared-directory flow (audit trail preserved at every hop):
+    input/ ─▶ processing/ ─▶ output/ (recycled to input/) ─▶ … ─▶ results/
 
 Usage:
-    python orchestrator.py
+    python orchestrator.py            # requires the agent services to be running
+    ./demo.sh                         # starts services, runs, tears down
 """
 from __future__ import annotations
 
@@ -22,8 +26,9 @@ import shutil
 from collections import Counter
 from pathlib import Path
 
-from pipeline import fraud_detector, settlement, validator
-from pipeline.common import make_envelope, now_iso
+import httpx
+
+from pipeline.common import audit, make_envelope, now_iso
 
 ROOT = Path(__file__).resolve().parent
 SHARED = ROOT / "shared"
@@ -32,12 +37,37 @@ PROCESSING = SHARED / "processing"
 OUTPUT = SHARED / "output"
 RESULTS = SHARED / "results"
 SUMMARY_FILE = RESULTS / "_summary.json"
+CONFIG_FILE = ROOT / "pipeline-config.json"
 
-STAGES = [
-    ("validator", validator.process_transaction, "fraud_detector"),
-    ("fraud_detector", fraud_detector.process_transaction, "settlement"),
-    ("settlement", settlement.process_transaction, "results"),
-]
+
+class AgentUnreachableError(RuntimeError):
+    """Raised when an agent microservice cannot be reached."""
+
+
+def load_config(config_path: Path | None = None) -> dict:
+    
+    """Read the agent order and endpoints from pipeline-config.json."""
+    path = config_path or CONFIG_FILE
+    config = json.loads(path.read_text())
+    if not config.get("agents"):
+        raise ValueError(f"No agents configured in {path}")
+    return config
+
+
+def call_agent(agent: dict, record: dict, timeout: float = 10.0) -> dict:
+    """POST a record to one agent service and return the updated record.
+
+    Tests monkeypatch this to dispatch in-process instead of over HTTP.
+    """
+    try:
+        response = httpx.post(agent["url"], json=record, timeout=timeout)
+        response.raise_for_status()
+        return response.json()
+    except httpx.HTTPError as exc:
+        raise AgentUnreachableError(
+            f"Agent '{agent['name']}' at {agent['url']} is unreachable: {exc}\n"
+            f"Start the agent services first (see demo.sh or HOWTORUN.md)."
+        ) from exc
 
 
 def reset_shared() -> None:
@@ -51,16 +81,33 @@ def reset_shared() -> None:
 def load_input(sample_path: Path) -> int:
     """Drop each raw record into shared/input/ as an envelope. Returns count."""
     records = json.loads(sample_path.read_text())
+    first_agent = load_config()["agents"][0]["name"]
     for record in records:
         envelope = make_envelope(record, source_stage="orchestrator",
-                                 target_stage="validator")
+                                 target_stage=first_agent)
         txn_id = record.get("transaction_id", envelope["message_id"])
         (INPUT / f"{txn_id}.json").write_text(json.dumps(envelope, indent=2))
     return len(records)
 
 
-def run_stage(name, process_fn, target, final: bool) -> None:
-    """Drain shared/input/, process each record, write to the next location."""
+def _outcome(data: dict) -> str:
+    """Short human-readable outcome for the audit line."""
+    status = data.get("status", "unknown")
+    if status == "rejected":
+        return f"rejected ({data.get('reason')})"
+    if data.get("settled"):
+        return f"settled (fee={data.get('fee')}, net={data.get('net_amount')})"
+    if "risk_score" in data:
+        return f"{status} (risk={data['risk_score']})"
+    return status
+
+
+def run_stage(agent: dict, target: str, final: bool, timeout: float = 10.0) -> None:
+    """Drain shared/input/, call this agent service for each record, persist.
+
+    Each service also logs its own audit line locally; the orchestrator emits
+    one here too so a single terminal shows the whole distributed run.
+    """
     dest = RESULTS if final else OUTPUT
     for src in sorted(INPUT.glob("*.json")):
         # Move into processing/ to signal "in progress".
@@ -68,13 +115,15 @@ def run_stage(name, process_fn, target, final: bool) -> None:
         shutil.move(str(src), str(working))
 
         envelope = json.loads(working.read_text())
-        new_data = process_fn(envelope["data"])
-        new_envelope = make_envelope(new_data, source_stage=name,
+        new_data = call_agent(agent, envelope["data"], timeout=timeout)
+        audit(agent["name"], new_data.get("transaction_id", "UNKNOWN"),
+              _outcome(new_data))
+        new_envelope = make_envelope(new_data, source_stage=agent["name"],
                                      target_stage=target)
         (dest / src.name).write_text(json.dumps(new_envelope, indent=2))
         working.unlink()
 
-    # Recycle this stage's output back into input/ for the next stage.
+    # Recycle this stage's output back into input/ for the next agent.
     if not final:
         for out in OUTPUT.glob("*.json"):
             shutil.move(str(out), str(INPUT / out.name))
@@ -82,18 +131,18 @@ def run_stage(name, process_fn, target, final: bool) -> None:
 
 def build_summary(total: int) -> dict:
     """Aggregate final results/ into a summary report."""
-    statuses = Counter()
-    rejected = []
-    flagged = []
+    statuses: Counter[str] = Counter()
+    rejected, flagged = [], []
     for result_file in RESULTS.glob("*.json"):
         if result_file.name.startswith("_"):
             continue
         data = json.loads(result_file.read_text())["data"]
-        statuses[data.get("status", "unknown")] += 1
-        if data.get("status") == "rejected":
+        status = data.get("status", "unknown")
+        statuses[status] += 1
+        if status == "rejected":
             rejected.append({"transaction_id": data.get("transaction_id"),
                              "reason": data.get("reason")})
-        if data.get("status") == "flagged":
+        if status == "flagged":
             flagged.append({"transaction_id": data.get("transaction_id"),
                             "risk_score": data.get("risk_score")})
     return {
@@ -123,17 +172,26 @@ def print_summary(summary: dict) -> None:
     print("=" * 52 + "\n")
 
 
-def run(sample_path: Path | None = None) -> dict:
-    """Run the full pipeline and return the summary dict."""
+def run(sample_path: Path | None = None, config_path: Path | None = None) -> dict:
+    """Run the full pipeline through the agent services and return the summary."""
     sample_path = sample_path or (ROOT / "sample-transactions.json")
+    config = load_config(config_path)
+    agents = config["agents"]
+    timeout = float(config.get("timeout_seconds", 10))
+
     reset_shared()
     total = load_input(sample_path)
 
-    print(f"\nLoaded {total} transactions into shared/input/\n")
+    order = " → ".join(a["name"] for a in agents)
+    print(f"\nLoaded {total} transactions into shared/input/")
+    print(f"Agent order (from pipeline-config.json): {order}\n")
     print(f"{'AUDIT LOG':<24} (timestamp | stage | txn | outcome)")
     print("-" * 70)
-    for i, (name, fn, target) in enumerate(STAGES):
-        run_stage(name, fn, target, final=(i == len(STAGES) - 1))
+
+    for i, agent in enumerate(agents):
+        final = i == len(agents) - 1
+        target = "results" if final else agents[i + 1]["name"]
+        run_stage(agent, target, final=final, timeout=timeout)
 
     summary = build_summary(total)
     SUMMARY_FILE.write_text(json.dumps(summary, indent=2))

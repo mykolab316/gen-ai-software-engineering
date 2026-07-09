@@ -4,7 +4,7 @@ pythonpath = ["."]
 addopts = "-q"
 
 [tool.coverage.run]
-source = ["pipeline", "orchestrator", "backend", "mcp"]
+source = ["pipeline", "orchestrator", "backend", "mcp", "services"]
 omit = ["*/__init__.py", "tests/*", ".venv/*"]
 
 [tool.coverage.report]

@@ -12,6 +12,28 @@ from pathlib import Path
 import pytest
 
 import orchestrator
+from pipeline import fraud_detector, settlement, validator
+
+# Maps a configured agent name to the stage function its service wraps.
+AGENT_FNS = {
+    "validator": validator.process_transaction,
+    "fraud_detector": fraud_detector.process_transaction,
+    "settlement": settlement.process_transaction,
+}
+
+
+@pytest.fixture
+def local_agents(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Dispatch agent calls in-process instead of over HTTP.
+
+    Keeps the orchestrator tests hermetic — no live microservices required.
+    The real HTTP path is covered separately in ``test_services.py`` and by
+    ``test_call_agent_unreachable``.
+    """
+    def fake_call(agent: dict, record: dict, timeout: float = 10.0) -> dict:
+        return AGENT_FNS[agent["name"]](record)
+
+    monkeypatch.setattr(orchestrator, "call_agent", fake_call)
 
 
 @pytest.fixture

@@ -12,7 +12,7 @@ def test_health():
     assert res.json() == {"status": "ok"}
 
 
-def test_run_endpoint(isolated_shared, sample_file, monkeypatch):
+def test_run_endpoint(isolated_shared, local_agents, sample_file, monkeypatch):
     # Make the endpoint run against the controlled sample file.
     import orchestrator
 
@@ -28,7 +28,7 @@ def test_run_endpoint(isolated_shared, sample_file, monkeypatch):
     assert len(body["results"]) == 4
 
 
-def test_results_endpoint_after_run(isolated_shared, sample_file):
+def test_results_endpoint_after_run(isolated_shared, local_agents, sample_file):
     import orchestrator
 
     orchestrator.run(sample_path=sample_file)

@@ -1,0 +1,24 @@
+{
+  "_comment": "Agent execution order and service endpoints. The orchestrator reads this file and calls each agent service over HTTP in the order listed. Reorder or add agents here — no code change required.",
+  "agents": [
+    {
+      "name": "validator",
+      "url": "http://localhost:8001/process",
+      "port": 8001,
+      "module": "services.validator_service:app"
+    },
+    {
+      "name": "fraud_detector",
+      "url": "http://localhost:8002/process",
+      "port": 8002,
+      "module": "services.fraud_service:app"
+    },
+    {
+      "name": "settlement",
+      "url": "http://localhost:8003/process",
+      "port": 8003,
+      "module": "services.settlement_service:app"
+    }
+  ],
+  "timeout_seconds": 10
+}

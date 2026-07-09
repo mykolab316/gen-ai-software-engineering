@@ -18,7 +18,7 @@ def _results(shared):
     return out
 
 
-def test_all_transactions_reach_results(isolated_shared, sample_file):
+def test_all_transactions_reach_results(isolated_shared, local_agents, sample_file):
     summary = orchestrator.run(sample_path=sample_file)
     results = _results(isolated_shared)
 
@@ -27,7 +27,7 @@ def test_all_transactions_reach_results(isolated_shared, sample_file):
     assert set(results) == {"T1", "T2", "T3", "T4"}
 
 
-def test_outcomes_match_expectations(isolated_shared, sample_file):
+def test_outcomes_match_expectations(isolated_shared, local_agents, sample_file):
     orchestrator.run(sample_path=sample_file)
     results = _results(isolated_shared)
 
@@ -37,7 +37,7 @@ def test_outcomes_match_expectations(isolated_shared, sample_file):
     assert results["T4"]["status"] == "settled"        # negative refund ok
 
 
-def test_summary_counts(isolated_shared, sample_file):
+def test_summary_counts(isolated_shared, local_agents, sample_file):
     summary = orchestrator.run(sample_path=sample_file)
     assert summary["by_status"]["settled"] == 2
     assert summary["by_status"]["flagged"] == 1
@@ -45,7 +45,7 @@ def test_summary_counts(isolated_shared, sample_file):
     assert summary["rejected"][0]["transaction_id"] == "T3"
 
 
-def test_summary_file_written(isolated_shared, sample_file):
+def test_summary_file_written(isolated_shared, local_agents, sample_file):
     orchestrator.run(sample_path=sample_file)
     summary_file = isolated_shared / "results" / "_summary.json"
     assert summary_file.exists()
@@ -53,7 +53,7 @@ def test_summary_file_written(isolated_shared, sample_file):
     assert data["total"] == 4
 
 
-def test_envelope_format_preserved(isolated_shared, sample_file):
+def test_envelope_format_preserved(isolated_shared, local_agents, sample_file):
     orchestrator.run(sample_path=sample_file)
     any_file = next(
         f for f in (isolated_shared / "results").glob("*.json")
@@ -65,13 +65,13 @@ def test_envelope_format_preserved(isolated_shared, sample_file):
     assert "message_id" in envelope
 
 
-def test_run_is_deterministic(isolated_shared, sample_file):
+def test_run_is_deterministic(isolated_shared, local_agents, sample_file):
     first = orchestrator.run(sample_path=sample_file)["by_status"]
     second = orchestrator.run(sample_path=sample_file)["by_status"]
     assert first == second
 
 
-def test_real_sample_produces_eight_results(isolated_shared):
+def test_real_sample_produces_eight_results(isolated_shared, local_agents):
     """Uses the committed sample-transactions.json (default sample path)."""
     summary = orchestrator.run()
     assert summary["total"] == 8

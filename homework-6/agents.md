@@ -64,17 +64,24 @@ These are development-time roles, each backed by a concrete artifact:
 ```
 homework-6/
 ├── sample-transactions.json     # input data (8 records, with edge cases)
+├── pipeline-config.json         # agent ORDER + service URLs (read by orchestrator)
+├── demo.sh                      # one-shot: start services, run, tear down
 ├── specification.md             # WHAT we build (Agent 1 output)
 ├── agents.md                    # this file — HOW to work here
 ├── research-notes.md            # context7 queries (Agent 2)
-├── orchestrator.py              # runs all stages in order
-├── pipeline/
-│   ├── validator.py             # stage 1
-│   ├── fraud_detector.py        # stage 2
-│   └── settlement.py            # stage 3
-├── shared/                      # file-based hand-off between stages
+├── orchestrator.py              # reads config, calls agent services over HTTP
+├── pipeline/                    # business logic (pure functions)
+│   ├── validator.py             # agent 1 logic
+│   ├── fraud_detector.py        # agent 2 logic
+│   └── settlement.py            # agent 3 logic
+├── services/                    # each agent as a FastAPI microservice
+│   ├── base.py                  # create_agent_app(name, process_fn)
+│   ├── validator_service.py     # :8001
+│   ├── fraud_service.py         # :8002
+│   └── settlement_service.py    # :8003
+├── shared/                      # audit trail written by the orchestrator
 │   ├── input/  processing/  output/  results/
-├── backend/api.py               # FastAPI: /api/run, /api/results
+├── backend/api.py               # FastAPI gateway: /api/run, /api/results
 ├── frontend/                    # React + TS + Vite dashboard
 ├── mcp/server.py                # custom FastMCP server
 ├── mcp.json                     # context7 + pipeline-status servers
@@ -85,21 +92,34 @@ homework-6/
 └── docs/                        # presentation.pdf + screenshots/
 ```
 
-## 6. Pipeline stages (summary — full detail in specification.md)
+## 6. Agents as microservices (summary — full detail in specification.md)
 
-1. **Validator** — required fields present, amount is a valid non-zero
+Each agent runs as its **own FastAPI microservice**, exposing `POST /process`
+(record in → record out) and `GET /health`. The orchestrator reads the agent
+order and endpoints from **`pipeline-config.json`** and calls each service over
+HTTP in that order. Services never call each other.
+
+1. **Validator** (:8001) — required fields present, amount is a valid non-zero
    `Decimal` (negative allowed only for `refund`), currency is ISO 4217.
    Rejects bad records with a `reason`.
-2. **Fraud Detector** — scores risk `0.0–1.0` from signals: high value
+2. **Fraud Detector** (:8002) — scores risk `0.0–1.0` from signals: high value
    (> $10,000), off-hours activity (00:00–05:00 UTC), cross-border
    (country ≠ US), and transaction type. Flags scores ≥ 0.5.
-3. **Settlement** — for non-rejected records, computes fee (0.5%), net amount,
-   and marks `settled`. Uses `Decimal` + `ROUND_HALF_UP`.
+3. **Settlement** (:8003) — for non-rejected records, computes fee (0.5%), net
+   amount, and marks `settled`. Uses `Decimal` + `ROUND_HALF_UP`.
+
+The business logic lives in `pipeline/*.py`; `services/*.py` are thin HTTP
+wrappers built by `services/base.py::create_agent_app`. **The order is
+configuration, not code** — reorder `pipeline-config.json` and the pipeline
+changes with no code edit.
+
+Run everything with `./demo.sh` (starts services, runs, tears down).
 
 ## 7. File-based hand-off protocol
 
-Stages never call each other directly. Each stage reads JSON message files from
-one `shared/` directory and writes to the next. Standard envelope:
+The orchestrator persists every hop to `shared/` as a JSON envelope (agents
+themselves never touch `shared/`). HTTP is the *invocation* mechanism; the files
+are the *audit trail*. Standard envelope:
 
 ```json
 {
