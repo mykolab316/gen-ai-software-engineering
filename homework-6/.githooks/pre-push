@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Git pre-push coverage gate.
+#
+# Blocks `git push` if the transaction-pipeline test coverage is below 80%.
+# Enable with:  bash homework-6/scripts/install-hooks.sh
+set -e
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "$DIR/../scripts/check_coverage.sh"

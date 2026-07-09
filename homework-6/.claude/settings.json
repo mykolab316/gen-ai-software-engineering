@@ -1,0 +1,16 @@
+{
+  "enabledMcpjsonServers": ["pipeline-status"],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/claude_coverage_gate.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}

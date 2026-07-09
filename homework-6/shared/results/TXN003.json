@@ -1,0 +1,27 @@
+{
+  "message_id": "3a13999c-76ea-4ef3-894c-e08f8e71dd0b",
+  "timestamp": "2026-07-09T17:07:07Z",
+  "source_stage": "settlement",
+  "target_stage": "results",
+  "message_type": "transaction",
+  "data": {
+    "transaction_id": "TXN003",
+    "timestamp": "2026-03-16T09:30:00Z",
+    "source_account": "ACC-1003",
+    "destination_account": "ACC-9999",
+    "amount": "9999.99",
+    "currency": "USD",
+    "transaction_type": "transfer",
+    "description": "Consulting payment",
+    "metadata": {
+      "channel": "online",
+      "country": "US"
+    },
+    "status": "settled",
+    "risk_score": 0.0,
+    "risk_reasons": [],
+    "fee": "50.00",
+    "net_amount": "9949.99",
+    "settled": true
+  }
+}

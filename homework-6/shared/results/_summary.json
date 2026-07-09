@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-07-09T17:07:07Z",
+  "total": 8,
+  "by_status": {
+    "settled": 4,
+    "rejected": 1,
+    "flagged": 3
+  },
+  "rejected": [
+    {
+      "transaction_id": "TXN006",
+      "reason": "currency 'XYZ' is not a valid ISO 4217 code"
+    }
+  ],
+  "flagged": [
+    {
+      "transaction_id": "TXN004",
+      "risk_score": 0.5
+    },
+    {
+      "transaction_id": "TXN005",
+      "risk_score": 0.6
+    },
+    {
+      "transaction_id": "TXN002",
+      "risk_score": 0.6
+    }
+  ]
+}

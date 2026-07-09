@@ -1,0 +1,19 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["pipeline", "orchestrator", "backend", "mcp", "services"]
+omit = ["*/__init__.py", "tests/*", ".venv/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+# The coverage gate lives in the Task 3 hook; 80% is the hard floor, 90% target.
+fail_under = 80
+exclude_lines = [
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+  "def main",
+]
